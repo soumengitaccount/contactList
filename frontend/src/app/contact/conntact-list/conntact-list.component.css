@@ -1,0 +1,28 @@
+.nav-link:hover{
+    cursor: pointer;
+    color: blue;
+}
+table tr:hover{
+    background: rgb(219, 219, 219);
+}
+button {
+   opacity:0.4;
+}
+button:hover{
+    opacity: 12;
+
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+.card-body{
+    height: 470px !important;
+    overflow-y: scroll !important ;
+    scroll-behavior: smooth !important;
+    scrollbar-width: 2px;
+    scrollbar-arrow-color: aqua;
+}
+.card-body::-webkit-scrollbar{
+    opacity:0;
+}

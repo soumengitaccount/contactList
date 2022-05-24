@@ -1,0 +1,44 @@
+<div class="card">
+    <div class="card-header">
+      <div class="row heder">
+        <div class="col-md-6">Contacts | <span (click)="blulkDelete()">Delete All</span></div>
+        <div class="col-md-6">
+          <div class="col-auto">
+            <label class="sr-only" for="inlineFormInputGroup">Phone NUmber</label>
+            <div class="input-group">
+              <!-- <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fa fa-search fa-2x"></i></div>
+              </div> -->
+              <input type="text" [(ngModel)]="search_value"  class="form-control"  placeholder="Search">
+            </div>
+          </div>
+        
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-reponsive">
+            <thead class="thead-dark">
+              <tr>
+                <!-- <th scope="col">#</th> -->
+                <th scope="col">Name</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">action</th>
+              </tr>
+            </thead>
+            <tbody>
+            
+                <tr *ngFor=" let contact of allcontacts |filterContact:search_value; let i = index" >
+                
+                    <!-- <th scope="row"></th> -->
+                    <td>{{contact.name}}</td>
+                    <td>{{contact.number}}</td>
+                    <td> <button class="btn btn-primary" title="edit" (click)="editContact(contact._id)"><i class="fa fa-edit" aria-hidden="true"></i></button> 
+                         <button class="btn btn-danger" (click)="delete(contact._id)" title="delete"><i class="fa fa-trash"></i></button></td>
+                  </tr>
+
+            </tbody>
+          </table>
+          
+</div>
+</div>

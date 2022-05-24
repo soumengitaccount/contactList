@@ -1,0 +1,38 @@
+<div class="card">
+    <div class="card-header">Update Contact</div>
+    <div class="card-body">
+
+<form [formGroup]="contactform" (ngSubmit)="onUpdate()">
+  <!-- {{contactform.value | json}} -->
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput">Name</label>
+        <input type="text"  formControlName="name" [(ngModel)]="contactname" class="form-control mb-2" name="name" placeholder="Contact Name" >
+       <input type="text" name="_id" formControlName="_id"  [(ngModel)]="contactid"   hidden>
+       </div>
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInputGroup">Phone NUmber</label>
+        <div class="input-group mb-2">
+          <!-- <div class="input-group-prepend">
+            <div class="input-group-text">@</div>
+          </div> -->
+          <input type="text" formControlName="number"  [(ngModel)]="contactnumber" class="form-control" name="number" placeholder="Phone number" requred>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <button type="submit" [class.disabled]="contactform.invalid"  class="btn btn-primary mb-2">Update Now</button>
+      </div>
+    </div>
+  </form>
+  
+
+  <div class="card-footer fade show text-white" >
+
+    <div class="alert alert-dismissible fade show" [ngClass]="{'alert-success':form_submit_status==true, 'alert-danger':form_submit_status==false}" *ngIf="form_msg" role="alert">
+      <strong>{{form_msg}}</strong> 
+     
+    </div>
+  </div>
+</div>
+</div>
