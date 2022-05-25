@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+var jwt  =require('jsonwebtoken');
 const Contact =require('../models/contacts');
 const Auth =require('../models/user_schema');
 
@@ -55,11 +56,11 @@ router.get('/delete-contact/:id',(req, res, next)=>{
     Contact.remove({_id: req.params.id}, (err, result)=>{
         if(err){
             res.json({msg:"Can not delete"});
-            console.log("Can not Delete record of Id:"+  req.params.id);
+            console.log("Can not Delete contact record of Id:"+  req.params.id);
         }
         else{
             res.json({msg:"One  value deleted",result: result});
-            console.log("Delete record of Id:"+  req.params.id);
+            console.log("Delete contact record of Id:"+  req.params.id);
         }
       
     })
@@ -100,13 +101,71 @@ Contact.findOneAndUpdate({_id:req.body._id},{$set:{name:req.body.name, number:re
 })
 })
 
-// =============================  Auth Route   =============================================================
+// =============================  Auth Route Register  =============================================================
 
 router.post('/register',(req,res,next)=>{
-
+   let  auth =new Auth({
+        user_id: req.body.email,
+        password: ''
+   });
+  auth.password =  auth.hash(req.body.password);
+   Auth.findOne({user_id:req.body.email},(error,user)=>{
+       console.log(user);
+       if(error){
+        res.json({msg:'Registration Faild: '+err,status: false});
+       }
+       else{
+        if(user){
+            res.json({msg:'Email Or UserID already Exists',status: false});
+        }
+        else{
+             auth.save(function(err,registeredUser){
+                 if(err){
+                     res.json({msg:'Registration not ssuccess due  to  some issue: '+err,status:false})
+                 }
+         
+                 else{
+                     console.log("successfully registerd:");
+                     console.log(req.body);
+                     let payload = {subject: registeredUser._id};
+                     let token = jwt.sign(payload,'secreteKey');
+                     res.json({token:token,msg:'you are successfully registerd',status:true})
+                 }
+             })
+        }
+       }
+   })
+   
 })
 
+// ================================= delete all auth data=================================
+router.get('/delauth',(req,res,next)=>{
+    Auth.remove(function(err, result){
+        if(err){
+            res.json({msg:'try again'})
+        }
+        else{
+            res.json({sg:'All deleted'})
+        }
+    })
+})
+// ===============================  Login ===============================================
 router.post('/login',(req,res,next)=>{
-    
+    Auth.findOne({user_id:req.body.email},(err,user)=>{
+        // console.log(user.checkHash(req.body.password,user.salt));
+        if(user){
+            if(user.password.match(user.checkHash(req.body.password,user.salt)))
+            {   let payload = {subject: user._id};
+                let token = jwt.sign(payload,'secreteKey');
+                res.json({token:token,msg:'Login Successfully Please wait..... to redirect'})
+            }
+            else{
+                res.json({msg:'Invalid Password'});
+            }
+        }
+        else{
+            res.json({msg:'Invalid Log-in Details, Or Invalid user ID'});
+        }
+    })
 })
 module.exports = router;

@@ -11,12 +11,12 @@ import { Contact } from './contact';
 })
 export class ContactService {
    RestApi:String = "http://localhost:2000/api";
-  ;
+
   constructor(private httpClint: HttpClient) { }
 
   addContact(contact_data:Contact):any{
 
-  let headers = new HttpHeaders().set('Content-Type','application/json');
+   let headers = new HttpHeaders().set('Content-Type','application/json');
    let Api_url = this.RestApi+'/add-contact';
     console.log(Api_url);
     return this.httpClint.post(Api_url,contact_data,{headers:headers}).pipe(catchError(this.handelError));
