@@ -6,13 +6,14 @@ import { RegistrationComponent } from './auth/registration/registration.componen
 import { AddContactComponent } from './contact/add-contact/add-contact.component';
 import { ConntactListComponent } from './contact/conntact-list/conntact-list.component';
 import { EditContactComponent } from './contact/edit-contact/edit-contact.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
 
   {path:'', redirectTo: 'contacts', pathMatch: 'full'},
-  {path:'contacts', component: ConntactListComponent},
-  {path:'add-contacts', component: AddContactComponent},
-  {path:'edit-contact/:id', component: EditContactComponent},
+  {path:'contacts', component: ConntactListComponent, canActivate:[AuthGuard]},
+  {path:'add-contacts', component: AddContactComponent, canActivate:[AuthGuard]},
+  {path:'edit-contact/:id', component: EditContactComponent, canActivate:[AuthGuard]},
   {path:'sign-up', component: RegistrationComponent},
   {path:'sign-in', component: LoginComponent},
 ];

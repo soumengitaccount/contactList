@@ -2,7 +2,7 @@
     <div class="card-header"> User Sign Up</div>
     <div class="card-body">
 
-<form [formGroup]="registerform" (ngSubmit)="onSubmit()">
+<form [formGroup]="registerform" (ngSubmit)="registerUser()">
   <!-- {{contactform.value | json}} -->
     <div class="form-row align-items-center">
       <div class="col-auto">
@@ -20,7 +20,7 @@
       </div>
 
       <div class="col-12">
-        <button type="submit" [class.disabled]="registerform.invalid" class="btn btn-primary mb-2">Sign Up</button>
+        <button type="submit"  class="btn btn-primary mb-2">Sign Up</button>
       </div>
     </div>
   </form>

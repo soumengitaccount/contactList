@@ -101,6 +101,8 @@ Contact.findOneAndUpdate({_id:req.body._id},{$set:{name:req.body.name, number:re
 })
 })
 
+
+
 // =============================  Auth Route Register  =============================================================
 
 router.post('/register',(req,res,next)=>{
@@ -138,6 +140,8 @@ router.post('/register',(req,res,next)=>{
    
 })
 
+
+
 // ================================= delete all auth data=================================
 router.get('/delauth',(req,res,next)=>{
     Auth.remove(function(err, result){
@@ -149,6 +153,8 @@ router.get('/delauth',(req,res,next)=>{
         }
     })
 })
+
+
 // ===============================  Login ===============================================
 router.post('/login',(req,res,next)=>{
     Auth.findOne({user_id:req.body.email},(err,user)=>{
@@ -157,15 +163,19 @@ router.post('/login',(req,res,next)=>{
             if(user.password.match(user.checkHash(req.body.password,user.salt)))
             {   let payload = {subject: user._id};
                 let token = jwt.sign(payload,'secreteKey');
-                res.json({token:token,msg:'Login Successfully Please wait..... to redirect'})
+                res.json({token:token,msg:'Login Successfully Please wait..... to redirect',status:true})
             }
             else{
-                res.json({msg:'Invalid Password'});
+                res.json({msg:'Invalid Password',status:false});
             }
         }
         else{
-            res.json({msg:'Invalid Log-in Details, Or Invalid user ID'});
+            res.json({msg:'Invalid Log-in Details, Or Invalid user ID',status:false});
         }
     })
+
+
 })
+
+
 module.exports = router;

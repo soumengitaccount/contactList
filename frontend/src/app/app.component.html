@@ -1,2 +1,22 @@
 
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="contacts">ContactList</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active"   href="contacts">All Contacts </a>
+          <a class="nav-item nav-link" href="add-contacts">New Contact</a>
+          
+        </div>
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" *ngIf="!_authService.logedIn()" href="sign-up">Sign Up</a>
+          <a class="nav-item nav-link" *ngIf="!_authService.logedIn()" href="sign-in">sign In</a>
+          <a class="nav-item nav-link" *ngIf="_authService.logedIn()" (click)="_authService.logoutUser()" href="/">sign Out</a>
+        </div>
+      </div>
+    </nav>
 <router-outlet></router-outlet>
+</div>

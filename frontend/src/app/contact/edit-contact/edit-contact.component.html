@@ -8,7 +8,7 @@
       <div class="col-auto">
         <label class="sr-only" for="inlineFormInput">Name</label>
         <input type="text"  formControlName="name" [(ngModel)]="contactname" class="form-control mb-2" name="name" placeholder="Contact Name" >
-       <input type="text" name="_id" formControlName="_id"  [(ngModel)]="contactid"   hidden>
+       <input type="text" name="_id" formControlName="_id"  [ngModel]="contactid"   hidden>
        </div>
       <div class="col-auto">
         <label class="sr-only" for="inlineFormInputGroup">Phone NUmber</label>

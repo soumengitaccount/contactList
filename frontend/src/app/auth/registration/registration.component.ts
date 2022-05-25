@@ -20,7 +20,7 @@ export class RegistrationComponent implements OnInit {
     protected contactslist=[''];
     registerform:FormGroup = this.fb.group({
        email:['',Validators.required],
-       password:['',[Validators.required,Validators.maxLength(10)]]
+       password:['',[Validators.required]]
     });
 
     
@@ -31,17 +31,18 @@ export class RegistrationComponent implements OnInit {
   form_submit_status:any='';
   form_msg:any='';
 
-  onSubmit():any{
+  registerUser():any{
     // console.log(this.registerform.value);
      let res= this.authService.register(this.registerform.value).subscribe((res: any)=>{
        if(res.status){
         this.form_submit_status = res.status;
         this.form_msg = res.msg;
         this.registerform.reset();
+        localStorage.setItem('token',res.token);
         console.log(res);
-        //  setTimeout(()=>{
-        //    this.route.navigate(['/contacts'])
-        //  },1500)
+         setTimeout(()=>{
+           this.route.navigate(['/contacts'])
+         },1500)
        }
        else{
         this.form_submit_status = res.status;

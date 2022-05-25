@@ -12,6 +12,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RegistrationComponent } from './auth/registration/registration.component';
 import { LoginComponent } from './auth/login/login.component';
+import { AuthService } from './service/auth.service';
+import { AuthGuard } from './guard/auth.guard';
+import { ContactService } from './service/contact.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,7 @@ import { LoginComponent } from './auth/login/login.component';
     CommonModule,
     RouterModule
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard, ContactService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
