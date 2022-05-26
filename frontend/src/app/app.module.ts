@@ -15,6 +15,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from './guard/auth.guard';
 import { ContactService } from './service/contact.service';
+import { NewComponent } from './new/new.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ContactService } from './service/contact.service';
     FilterContactPipe,
     EditContactComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    NewComponent
   ],
   imports: [
     BrowserModule,
