@@ -18,6 +18,7 @@ export class AddContactComponent implements OnInit {
     ) { }
     protected contactslist=[''];
     contactform:FormGroup = this.fb.group({
+      photo: ['',Validators.required],
        name:['',Validators.required],
        number:['',[Validators.required,Validators.maxLength(10)]]
     });
@@ -25,9 +26,40 @@ export class AddContactComponent implements OnInit {
   }
   form_submit_status:any='';
   form_msg:any='';
+  progresbar:any = false;
+  uploadProgress:any = 0;
+  imgSrc:any ='';
+  // progressvalue:String='';
+
+  formdata = new FormData();
+  showImage(event:any){
+    this.progresbar = true;
+    this.uploadProgress=30;
+    // this.progressvalue = `width: ${this.uploadProgress}%;`
+
+    const file: File = event.target.files[0];
+   
+    // const formdata = new FormData();
+   
+    this.formdata.append('photo',file);
+    console.log(this.formdata);
+
+    this.contactform.patchValue({photo: this.formdata});
+    this.contactform.updateValueAndValidity();
+    console.log(this.contactform.value.name);
+
+    const reader = new FileReader();// 
+    reader.onload = e => this.imgSrc = reader.result;
+    reader.readAsDataURL(file); 
+
+    
+  }
   onSubmit():any{
     // console.log(this.contactform.value);
-     let res= this.contactService.addContact(this.contactform.value).subscribe((res: any)=>{
+    this.formdata.append('name', this.contactform.value.name);
+    this.formdata.append('number', this.contactform.value.number);
+
+     let res= this.contactService.addContact(this.formdata).subscribe((res: any)=>{
        if(res.status){
         this.form_submit_status = res.status;
         this.form_msg = res.msg;
@@ -41,8 +73,11 @@ export class AddContactComponent implements OnInit {
         this.form_submit_status = res.status;
         this.form_msg = res.msg;
        }
-    
+       
      });
     
   }
+
+
+  
 }

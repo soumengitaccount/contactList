@@ -2,13 +2,22 @@
     <div class="card-header">Update Contact</div>
     <div class="card-body">
 
-<form [formGroup]="contactform" (ngSubmit)="onUpdate()">
+<form [formGroup]="contactform" (ngSubmit)="onUpdate()" enctype="multipart/form-data">
   <!-- {{contactform.value | json}} -->
     <div class="form-row align-items-center">
       <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput">Photo</label>
+        <input type="file" (change)="showImage($event)"   class="form-control mb-2" name="photo" >
+      </div>
+      <div class="progress" *ngIf="progresbar">
+        <div class="progress-bar" role="progressbar" [style.width.%]="uploadProgress" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{uploadProgress}}%</div>
+       
+      </div>
+      <img *ngIf="progresbar" [src]="imgSrc || null" alt="..." class="img-thumbnail">
+      <div class="col-auto">
         <label class="sr-only" for="inlineFormInput">Name</label>
         <input type="text"  formControlName="name" [(ngModel)]="contactname" class="form-control mb-2" name="name" placeholder="Contact Name" >
-       <input type="text" name="_id" formControlName="_id"  [ngModel]="contactid"   hidden>
+       <input type="text" name="_id" formControlName="_id"  [(ngModel)]="contactid"   hidden>
        </div>
       <div class="col-auto">
         <label class="sr-only" for="inlineFormInputGroup">Phone NUmber</label>
@@ -29,7 +38,7 @@
 
   <div class="card-footer fade show text-white" >
 
-    <div class="alert alert-dismissible fade show" [ngClass]="{'alert-success':form_submit_status==true, 'alert-danger':form_submit_status==false}" *ngIf="form_msg" role="alert">
+    <div class="alert alert-dismissible fade show" [class]="{'alert-success':form_submit_status==true, 'alert-danger':form_submit_status==false}" *ngIf="form_msg" role="alert">
       <strong>{{form_msg}}</strong> 
      
     </div>

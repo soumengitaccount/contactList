@@ -14,12 +14,13 @@ export class ContactService {
 
   constructor(private httpClint: HttpClient) { }
 
-  addContact(contact_data:Contact):any{
+  addContact(contact_data:any):any{
 
-   let headers = new HttpHeaders().set('Content-Type','application/json');
+  //  let headers = new HttpHeaders().set('Content-Type','application/json');
    let Api_url = this.RestApi+'/add-contact';
     console.log(Api_url);
-    return this.httpClint.post(Api_url,contact_data,{headers:headers}).pipe(catchError(this.handelError));
+    return this.httpClint.post(Api_url,contact_data,).pipe(catchError(this.handelError));
+    // return this.httpClint.post(Api_url,contact_data,{headers:headers}).pipe(catchError(this.handelError));
 
  }
 
@@ -47,11 +48,12 @@ export class ContactService {
    let Api_url = this.RestApi+'/bulk-delete';
    return this.httpClint.get(Api_url);
  }
-updateContacts(contact_data:any){
-  let headers = new HttpHeaders();
-   headers.append('content-Type','application/json');
+updateContacts(contact_data:any):any{
+  // let headers = new HttpHeaders();
+  //  headers.append('content-Type','application/json');
+  console.log(contact_data.get('_id'));
   let Api_url = this.RestApi+'/update-contacts';
-  return this.httpClint.post(Api_url,contact_data,{headers:headers}).pipe(catchError(this.handelError));
+  return this.httpClint.post(Api_url,contact_data).pipe(catchError(this.handelError));
  }
  
 handelError(error: HttpErrorResponse) {

@@ -9,16 +9,20 @@ const { mongo } = require('mongoose');
 const app = express();
 const port = 2000;
 
+app.use(express.static('public')); 
+app.use('/public', express.static('public'));
+
 app.use(bodyparser.json());
 app.use(cors()); // middlewire
 
 app.use('/api',route);
 app.get('/',(req, res)=>{
-    res.send("It`s Worked");
+    let html ='<img src="/index.png" alt="">';
+        res.send(html);
 });
 
 // monmgodb connection
-mongoose.connect("mongodb://localhost:27017/contacts");
+mongoose.connect("mongodb://localhost:27017/image-contacts");
 
 mongoose.connection.on('connected',()=>{
     console.log("Connected MongoDb");

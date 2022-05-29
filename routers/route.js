@@ -3,6 +3,7 @@ const router = express.Router();
 var jwt  =require('jsonwebtoken');
 const Contact =require('../models/contacts');
 const Auth =require('../models/user_schema');
+const multer  = require('multer')
 
 // get all conntacts=========================================================
 router.get('/contact-list',(req, res, next)=>{
@@ -22,32 +23,75 @@ router.post('/getbyid',(req, res, next)=>{
             console.log(err);
             return false;
         }
+          console.log(result);
         res.json(result);
   
     })
     
 });
+// //////////////////////////middle wire for save file to server using multer////////////////////////////////
+// const storage = multer.diskStorage({dest:"uplods/"}); // for simply upload file to upload folder 
+let static_path = ""
+const storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, './public/uploads')
+    },
+    filename: function (req, file, callback) {
+      callback(null, Date.now() +'.'+file.originalname)
+    }
+  })
+  
+  const upload = multer({ storage: storage })
+  
 // add new contact==========================================================
-router.post('/add-contact',(req, res, next)=>{
+router.post('/add-contact',upload.single('photo'),(req, res, next)=>{
+console.log('File Uploaded');
+    console.log(req.file);
+   if(req.file){
+    let newcontact = new Contact({
+        name : req.body.name,
+        number : req.body.number,
+        photo : req.file.path
+    });
+ //    res.send(data);
+      newcontact.save(function(err,contact){
+        if(err){
+            res.json({msg: "faild to store data: "+err,status:false});
+            console.log("Data not saved:");
+            console.log(req.body);
+        }
+        else{
+            res.json({msg: "new contact saved",status:true});
+            console.log("new data saved to db:");
+            console.log(contact);
+            console.log(req.body);
+        }
+ 
+    });
+   }
+   else{
+    let newcontact = new Contact({
+        name : req.body.name,
+        number : req.body.number,
+        photo : ""
+    });
+ //    res.send(data);
+      newcontact.save(function(err,contact){
+        if(err){
+            res.json({msg: "faild to store data: "+err,status:false});
+            console.log("Data not saved:");
+            console.log(req.body);
+        }
+        else{
+            res.json({msg: "new contact saved",status:true});
+            console.log("new data saved to db:");
+            console.log(req.body);
+        }
+ 
+    });
+    //    throw new Error("File Upload Not Sucess");
+   }
    
-   var newcontact = new Contact({
-       name : req.body.name,
-       number : req.body.number
-   });
-//    res.send(data);
-     newcontact.save(function(err,contact){
-       if(err){
-           res.json({msg: "faild to store data: "+err,status:false});
-           console.log("Data not saved:");
-           console.log(req.body);
-       }
-       else{
-           res.json({msg: "new contact saved",status:true});
-           console.log("new data saved to db:");
-           console.log(req.body);
-       }
-
-   });
 })
 
 
@@ -85,20 +129,44 @@ router.get('/bulk-delete',(req,res,next)=>{
 
 
 // update contact ?=====================================================
-router.post('/update-contacts',(req,res,next)=>{
-Contact.findOneAndUpdate({_id:req.body._id},{$set:{name:req.body.name, number:req.body.number}},(err,result)=>{
-    
-    if(err){
-        res.json({msg: "faild to Update data: "+err,status:false});
-        console.log("Record Not Update  of Id:"+  req.body._id);
-        
+router.post('/update-contacts',upload.single('photo'),(req,res,next)=>{
+// console.log(req._id);
+    if(req.file){
+        Contact.findOneAndUpdate({_id:req.body._id},{$set:{name:req.body.name, number:req.body.number, photo:req.file.path}},(err,result)=>{
+                
+                if(err){
+                    res.json({msg: "faild to Update data: "+err,status:false});
+                    console.log("Record Not Update  of Id:"+  req.body._id);
+                    
+                }
+                else{
+                    res.json({msg: "Updated successfully",status:true});
+                    console.log("Update record of Id:"+  req.body._id);
+                }
+        })
     }
     else{
-        res.json({msg: "Updated successfully",status:true});
-        console.log("Update record of Id:"+  req.body._id);
+        if(req.body.name==null || req.body.number==null)
+        {
+            res.json({msg: "faild to Update data: name or Number field is  blank",status:false});
+                    console.log("Record Not Update  of Id:"+  req.body._id);
+        }
+        else
+        {
+            Contact.findOneAndUpdate({_id:req.body._id},{$set:{name:req.body.name, number:req.body.number}},(err,result)=>{
+                
+                if(err){
+                    res.json({msg: "faild to Update data: "+err,status:false});
+                    console.log("Record Not Update  of Id:"+  req.body._id);
+                    
+                }
+                else{
+                    res.json({msg: "Updated successfully",status:true});
+                    console.log("Update record of Id:"+  req.body._id);
+                }
+        })
+        }
     }
-    
-})
 })
 
 

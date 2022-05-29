@@ -15,6 +15,8 @@ export class ConntactListComponent implements OnInit {
 
    allcontacts:Contact[]= [];
    search_value:any=""; //use for filtering contacts
+   base_url = 'http://localhost:2000/'
+
   ngOnInit(): void {
     this.contactService.getContacts().subscribe((res:any)=>{
 this.allcontacts= res;

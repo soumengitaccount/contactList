@@ -7,6 +7,10 @@ const contactSchema = mongo.Schema({
     number:{
         type: String,
         required:  true
+    },
+    photo:{
+        type: String,
+        required:false
     }
 });
 const Contact = module.exports = mongo.model('Contact',contactSchema);

@@ -9,7 +9,7 @@
               <!-- <div class="input-group-prepend">
                 <div class="input-group-text"><i class="fa fa-search fa-2x"></i></div>
               </div> -->
-              <input type="text" [(ngModel)]="search_value"  class="form-control"  placeholder="Search">
+              <input type="text" [value]="search_value"  class="form-control"  placeholder="Search">
             </div>
           </div>
         
@@ -20,7 +20,7 @@
         <table class="table table-reponsive">
             <thead class="thead-dark">
               <tr>
-                <!-- <th scope="col">#</th> -->
+                <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Phone Number</th>
                 <th scope="col">action</th>
@@ -30,7 +30,7 @@
             
                 <tr *ngFor=" let contact of allcontacts |filterContact:search_value; let i = index" >
                 
-                    <!-- <th scope="row"></th> -->
+                    <th scope="row"> <img src="{{base_url}}{{contact.photo}}" alt="..." class="img-thumbnail rounded-circle" height="20px" width="90px"></th>
                     <td>{{contact.name}}</td>
                     <td>{{contact.number}}</td>
                     <td> <button class="btn btn-primary" title="edit" (click)="editContact(contact._id)"><i class="fa fa-edit" aria-hidden="true"></i></button> 

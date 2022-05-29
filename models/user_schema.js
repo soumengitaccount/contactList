@@ -10,6 +10,7 @@ const  userSchema = mongo.Schema({
         type:     String,
         required: true
     },
+    
     salt: String
 });
 // Method to set salt and hash the password for a user 

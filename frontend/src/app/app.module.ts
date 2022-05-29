@@ -15,8 +15,6 @@ import { LoginComponent } from './auth/login/login.component';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from './guard/auth.guard';
 import { ContactService } from './service/contact.service';
-import { NewComponent } from './new/new.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +24,6 @@ import { NewComponent } from './new/new.component';
     EditContactComponent,
     RegistrationComponent,
     LoginComponent,
-    NewComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +35,11 @@ import { NewComponent } from './new/new.component';
     RouterModule
   ],
   providers: [AuthService, AuthGuard, ContactService],
+  exports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
