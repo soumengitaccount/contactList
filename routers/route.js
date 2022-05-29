@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
-var jwt  =require('jsonwebtoken');
+const jwt  =require('jsonwebtoken');
 const Contact =require('../models/contacts');
 const Auth =require('../models/user_schema');
-const multer  = require('multer')
+const multer  = require('multer');
+const fs = require('fs');
 
 // get all conntacts=========================================================
-router.get('/contact-list',(req, res, next)=>{
+router.get('/contact-list',verifyToken,(req, res, next)=>{
   Contact.find((err, contact)=>{
       res.json(contact);
 
@@ -41,7 +42,15 @@ const storage = multer.diskStorage({
     }
   })
   
-  const upload = multer({ storage: storage })
+  const upload = multer({ storage: storage,
+     fileFilter:(req,file,callback)=> {
+      let files = fs.readdirSync('./public/uploads');
+      if(files.includes(file.originalname)){
+         fs.unlinkSync('./public/uploads/'+file.originalname)
+       }
+       callback(null,true)
+     }
+    })
   
 // add new contact==========================================================
 router.post('/add-contact',upload.single('photo'),(req, res, next)=>{
@@ -245,5 +254,19 @@ router.post('/login',(req,res,next)=>{
 
 })
 
-
+function verifyToken(req,res,next){
+    if(!req.headers.authorization){
+        return res.json({msg:'unauthorize Request',status:false})
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if(token==null){
+        return res.json({msg:"unauthorize Request",status:false})
+    }
+    let payload =jwt.verify(token,'secreteKey')
+    if(!payload){
+        return res.json({msg:"unauthorize Request",status:false})
+    }  
+    req.user_id= payload.subject;
+    next()    
+}
 module.exports = router;

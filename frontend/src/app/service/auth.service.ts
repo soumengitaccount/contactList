@@ -34,8 +34,11 @@ export class AuthService {
   
   logoutUser(){
     localStorage.removeItem('token');
-   
   }
+  getToken(){
+    return localStorage.getItem('token');
+  }
+
   handelError(error: HttpErrorResponse) {
     let errmsg ='';
     if(error.error instanceof ErrorEvent){

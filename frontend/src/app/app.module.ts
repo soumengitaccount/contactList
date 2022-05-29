@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClientModule,HTTP_INTERCEPTORS} from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ConntactListComponent } from './contact/conntact-list/conntact-list.component';
@@ -15,6 +15,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from './guard/auth.guard';
 import { ContactService } from './service/contact.service';
+import { TokenInterceptotService } from './service/token-interceptot.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +35,11 @@ import { ContactService } from './service/contact.service';
     CommonModule,
     RouterModule
   ],
-  providers: [AuthService, AuthGuard, ContactService],
+  providers: [AuthService, AuthGuard, ContactService,
+              {provide:HTTP_INTERCEPTORS,
+              useClass:TokenInterceptotService,
+               multi: true }
+            ],
   exports: [
     CommonModule,
     FormsModule,
